@@ -1,0 +1,126 @@
+# Deployment for Ubuntu 18.04 LTS on VirtualBox (Adapter 1 : NAT, Adapter 2 : Host-only Adaptater (vboxnet0 (ipv4 : 192.168.56.1, mask : 255.255.255.252)))
+# User : arsciand
+# Password : 1319
+# Static IP : 192.168.56.2
+
+/*
+**	Initialisation
+*/
+
+* Update
+- sudo apt update && sudo apt upgrade
+
+* Initialisation of static IP via netplan
+- sudo rm /etc/netplan/01-netcfg.yaml
+- sudo vi /etc/netplan/01-netcfg.yaml
+
+>>>>
+# This file describes the network interfaces available on your system
+# For more information, see netplan(5).
+network:
+        version: 2
+        renderer: networkd
+        ethernets:
+                enp0s3:
+                        addresses: []
+                        dhcp4: yes
+                enp0s8:
+                        addresses: [192.168.56.2/30]
+                        dhcp4: no
+                        dhcp6: no
+                        nameservers:
+                                addresses: [8.8.8.8,8.8.8.4]
+====
+
+- sudo netplan apply
+
+/*
+**	Setup OpenSSH
+*/
+
+- sudo apt install openssh-server
+
+* Add id_rsa.pub to authorized_keys on server
+[host] - ssh-copy-id ~/.ssh/id_rsa.pub -i arsciand@192.168.56.2 #add user password
+
+* Modify /etc/ssh/sshd_config
+>>>>
+...
+- #Port 22
++ Port 2222
+...
+- #PermitRootLogin prohibit-password
++ PermitRootLogin no
+...
+- #PasswordAuthentification yes
++ PasswordAuthentification no
+====
+
+- sudo service ssh restart
+
+/*
+**	Set-up Nginx
+*/
+
+- sudo apt install nginx
+
+* Secure Nginx on /etc/nginx/nginx.conf
+>>>>
+- # server_tokens off;
++ server_token off;
+====
+
+- sudo service nginx restart
+
+* Creation of logs directory
+- mkdir ~/logs
+
+/*
+**
+*/
+
+/*
+** Installation of netdata (Web System Monitor)
+*/
+
+* Installation of dependency
+- sudo apt install git zlib1g-dev uuid-dev libmnl-dev gcc make autoconf autoconf-archive autogen automake pkg-config curl python python-yaml python-mysqldb python-psycopg2 nodejs lm-sensors netcat
+
+* Cloning repo of netdata
+- git clone https://github.com/firehol/netdata.git --depth=1 ~/netdata
+- cd ~/netdata
+- sudo ./netdata-installer.ssh
+- Press [ENTER]
+
+* Modify ram usage of netdata on /etc/netdata/netdata.conf
+>>>>
+...
+[global]
+...
+- # history 3996
++ history 3600
+====
+
+* Optimisation of Netdata memory usage -> creation of /etc/rc.local
+- sudo vi /etc/rc.local
+>>>>
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+echo 1 > /sys/kernel/mm/ksm/run
+echo 1000 > /sys/kernel/mm/ksm/sleep_millisecs
+
+exit 0
+====
+- sudo chmod +x /etc/rc.local
+- sudo service netdata restart
