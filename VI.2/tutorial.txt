@@ -8,11 +8,11 @@
 */
 
 * Update
-- sudo apt update && sudo apt upgrade
+$ sudo apt update && sudo apt upgrade
 
 * Initialisation of static IP via netplan
-- sudo rm /etc/netplan/01-netcfg.yaml
-- sudo vi /etc/netplan/01-netcfg.yaml
+$ sudo rm /etc/netplan/01-netcfg.yaml
+$ sudo vi /etc/netplan/01-netcfg.yaml
 
 >>>>
 # This file describes the network interfaces available on your system
@@ -32,16 +32,16 @@ network:
                                 addresses: [8.8.8.8,8.8.8.4]
 ====
 
-- sudo netplan apply
+$ sudo netplan apply
 
 /*
 **	Setup OpenSSH
 */
 
-- sudo apt install openssh-server
+$ sudo apt install openssh-server
 
 * Add id_rsa.pub to authorized_keys on server
-[host] - ssh-copy-id ~/.ssh/id_rsa.pub -i arsciand@192.168.56.2 #add user password
+[host] $ ssh-copy-id ~/.ssh/id_rsa.pub -i arsciand@192.168.56.2 #add user password
 
 * Modify /etc/ssh/sshd_config
 >>>>
@@ -56,41 +56,20 @@ network:
 + PasswordAuthentification no
 ====
 
-- sudo service ssh restart
-
-/*
-**	Set-up Nginx
-*/
-
-- sudo apt install nginx
-
-* Secure Nginx on /etc/nginx/nginx.conf
->>>>
-- # server_tokens off;
-+ server_token off;
-====
-
-- sudo service nginx restart
-
-* Creation of logs directory
-- mkdir ~/logs
-
-/*
-**
-*/
+$ sudo service ssh restart
 
 /*
 ** Installation of netdata (Web System Monitor)
 */
 
 * Installation of dependency
-- sudo apt install git zlib1g-dev uuid-dev libmnl-dev gcc make autoconf autoconf-archive autogen automake pkg-config curl python python-yaml python-mysqldb python-psycopg2 nodejs lm-sensors netcat
+$ sudo apt install git zlib1g-dev uuid-dev libmnl-dev gcc make autoconf autoconf-archive autogen automake pkg-config curl python python-yaml python-mysqldb python-psycopg2 nodejs lm-sensors netcat
 
 * Cloning repo of netdata
-- git clone https://github.com/firehol/netdata.git --depth=1 ~/netdata
-- cd ~/netdata
-- sudo ./netdata-installer.ssh
-- Press [ENTER]
+$ git clone https://github.com/firehol/netdata.git --depth=1 ~/netdata
+$ cd ~/netdata
+$ sudo ./netdata-installer.ssh
+$ Press [ENTER]
 
 * Modify ram usage of netdata on /etc/netdata/netdata.conf
 >>>>
@@ -102,7 +81,7 @@ network:
 ====
 
 * Optimisation of Netdata memory usage -> creation of /etc/rc.local
-- sudo vi /etc/rc.local
+$ sudo vi /etc/rc.local
 >>>>
 #!/bin/sh -e
 #
@@ -122,5 +101,138 @@ echo 1000 > /sys/kernel/mm/ksm/sleep_millisecs
 
 exit 0
 ====
-- sudo chmod +x /etc/rc.local
-- sudo service netdata restart
+$ sudo chmod +x /etc/rc.local
+$ sudo service netdata restart
+
+/*
+**	Set-up Nginx & Vhost for Netdata
+*/
+
+$ sudo apt install nginx
+
+* Secure Nginx on /etc/nginx/nginx.conf
+>>>>
+- # server_tokens off;
++ server_token off;
+====
+
+$ sudo service nginx restart
+
+* Creation of logs directory
+$ mkdir ~/logs
+
+* Creation of self-encrypted SSL key and certificate
+$ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/selfsigned.key -out /etc/ssl/certs/selfsigned.crt
+>
+Country Name (2 letter code) [AU]:FR
+State or Province Name (full name) [Some-State]:75
+Locality Name (eg, city) []:Paris
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:rs1
+Organizational Unit Name (eg, section) []:rs1
+Common Name (e.g. server FQDN or YOUR name) []:192.168.56.2
+Email Address []:arsciand@student.42.fr
+=
+
+* Creation of Diffie-Hellman group
+$ sudo mkdir /etc/ssl/dhparam
+$ sudo openssl dhparam -dsaparam -out /etc/ssl/dhparam/dhparam.pem 4096
+
+* Creation of Vhost for Netdata
+$ sudo vi /etc/nginx/sites-available/netdata.conf
+>>>>
+###|NETDATA.CONF|###
+
+	##Redirection
+
+upstream backend {
+	server 127.0.0.1:19999;
+	keepalive 64;
+}
+
+server {
+	listen 80;
+	server_name 192.168.56.2;
+	return 301 https://$server_name$request_uri;
+}
+
+	##BLOC
+
+server {
+        listen 443 ssl http2;
+	listen [::]:443 ssl http2;
+	server_name  192.168.56.2;
+
+        access_log  /home/arsciand/logs/netdata_acces.log;
+        error_log /home/arsciand/logs/netdata_error.log error;
+
+	#SSL
+
+	ssl on;
+	ssl_certificate	/etc/ssl/certs/selfsigned.crt;
+	ssl_certificate_key /etc/ssl/private/selfsigned.key;
+	ssl_dhparam /etc/ssl/dhparam/dhparam.pem;
+        ssl_protocols TLSv1.2;
+        ssl_prefer_server_ciphers on;
+	ssl_ciphers "ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384";
+        ssl_ecdh_curve secp384r1;
+        ssl_session_cache shared:SSL:100m;
+        ssl_session_timeout  24h;
+        ssl_stapling on;
+        ssl_stapling_verify on;
+
+        resolver 8.8.8.8 8.8.4.4 208.67.222.222 208.67.220.220 216.146.35.35 216.146.36.36 valid=300s;
+        resolver_timeout 5s;
+
+	add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+	add_header Expect-CT "max-age=0";
+	add_header X-Frame-Options DENY;
+	add_header X-XSS-Protection "1; mode=block";
+	add_header X-Content-Type-Options nosniff;
+	add_header X-Robots-Tag none;
+
+	#BODY
+
+	location / {
+		proxy_set_header X-Forwarded-Host $host;
+		proxy_set_header X-Forwarded-Server $host;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_pass http://backend;
+		proxy_http_version 1.1;
+		proxy_pass_request_headers on;
+		proxy_set_header Connection "keep-alive";
+		proxy_store off;
+	}
+
+	location ~ /\. {
+		deny all;
+		access_log off;
+		log_not_found off;
+	}
+
+	location ~ /\.well-known/acme-challenge {
+		allow all;
+	}
+}
+====
+# Note some rules in this .conf may look overkill, but they are all necessary to obtain an A+ (Highest rate) rate on ssllabs.com
+
+$ sudo ln -s /etc/nginx/sites-available/netdata.conf /etc/nginx/sites-enabled/netdata.conf
+$ sudo ngninx -t
+#If everything Ok, you should only get this warning : nginx: [warn] "ssl_stapling" ignored, issuer certificate not found for certificate "/etc/ssl/certs/selfsigned.crt"
+#This happening if the certificate is not bundle properly with a registred CA.
+$ sudo service nginx restart
+
+# Navigate to http://192.168.56.2, you should get a warning on your browser for not trusted certificate. This is normal. You can see that the url is now under https://192.168.56.2.
+
+/*
+**      Configuration of the Firewall (ufw)
+*/
+
+$ sudo apt install ufw
+$ sudo ufw enable
+$ sudo ufw default deny incoming
+$ sudo ufw default allow outgoing
+$ sudo ufw allow 2222/tcp
+$ sudo ufw allow 443/tcp
+$ sudo ufw reload
+
