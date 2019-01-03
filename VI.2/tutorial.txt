@@ -225,10 +225,8 @@ $ sudo service nginx restart
 # Navigate to http://192.168.56.2, you should get a warning on your browser for not trusted certificate. This is normal. You can see that the url is now under https://192.168.56.2.
 
 /*
-**      Configuration of the Firewall (ufw) & DOS
+**      Configuration of the Firewall (ufw)
 */
-
-$ sudo apt install ufw
 
 * Disable ipv6 in /etc/default/ufw
 >>>>
@@ -242,49 +240,10 @@ $ sudo ufw default allow outgoing
 $ sudo ufw allow 2222/tcp
 $ sudo ufw allow 80/tcp
 $ sudo ufw allow 443/tcp
+$ sudo ufw logging low
 $ sudo ufw reload
 
-* Creation of rules for DOS on /etc/ufw/befores.rules
->>>>
-...
-*filter
-+ :ufw-http - [0:0]
-+ :ufw-http-logdrop - [0:0]
-...
-# don't delete the 'COMMIT' line or these rules won't be processed
-+
-+ ###RS1DOS###
-+
-+ -A INPUT -p icmp -m limit --limit 6/s --limit-burst 1 -j ACCEPT
-+ -A INPUT -p icmp -j DROP
-+
-+ ### start ###
-+ # Enter rule
-+ -A ufw-before-input -p tcp --dport 80 -j ufw-http
-+ -A ufw-before-input -p tcp --dport 443 -j ufw-http
-+
-+ # Limit connections per Class C
-+ -A ufw-http -p tcp --syn -m connlimit --connlimit-above 50 --connlimit-mask 24 -j ufw-http-logdrop
-+
-+ # Limit connections per IP
-+ -A ufw-http -m state --state NEW -m recent --name conn_per_ip --set
-+ -A ufw-http -m state --state NEW -m recent --name conn_per_ip --update --seconds 10 --hitcount 5 -j ufw-http-logdrop
-+
-+ # Limit packets per IP
-+ -A ufw-http -m recent --name pack_per_ip --set
-+ -A ufw-http -m recent --name pack_per_ip --update --seconds 1 --hitcount 5 -j ufw-http-logdrop
-+
-+ # Finally accept
-+ -A ufw-http -j ACCEPT
-+
-+ # Log
-+ -A ufw-http-logdrop -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW HTTP DROP] "
-+ -A ufw-http-logdrop -j DROP
-+ ### end ##
-+
-+ ###End RS1DOS###
-+
-COMMIT
-====
-$ sudo ufw reload
+/*
+**		Configuration of Fail2ban (DOS & Port Scan protection)
+*/
 
