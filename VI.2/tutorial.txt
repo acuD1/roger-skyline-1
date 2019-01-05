@@ -242,8 +242,11 @@ $ sudo ufw allow 443/tcp
 $ sudo ufw reload
 
 /*
-**		Configuration of Fail2ban (DOS & Port Scan protection)
+**		Configuration of Fail2ban (DOS & Port Scan protection) with Postfix
 */
 
-$ sudo apt install fail2ban
+$ sudo apt install fail2ban postfix
+
+* Use custom jail.local instead of jail.conf
+
 

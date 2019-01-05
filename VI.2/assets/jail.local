@@ -1,0 +1,13 @@
+[DEFAULT]
+
+bantime = 1m
+findtime = 1m
+maxretry = 2
+
+banaction = ufw
+banaction_allports = ufw
+
+[sshd]
+enabled = true
+port = 2222
+filter = sshd
