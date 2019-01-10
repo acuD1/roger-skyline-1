@@ -8,7 +8,7 @@
 */
 
 * Update
-$ sudo apt update && sudo apt upgrade
+$ sudo apt update && sudo apt -y upgrade
 
 * Initialisation of static IP via netplan
 $ sudo rm /etc/netplan/01-netcfg.yaml
@@ -38,7 +38,7 @@ $ sudo netplan apply
 **	Setup OpenSSH
 */
 
-$ sudo apt install openssh-server
+$ sudo apt install -y openssh-server
 
 * Add id_rsa.pub to authorized_keys on server
 [host] $ ssh-copy-id ~/.ssh/id_rsa.pub -i arsciand@192.168.56.2 #add user password
@@ -63,13 +63,10 @@ $ sudo service ssh restart
 */
 
 * Installation of dependency
-$ sudo apt install git zlib1g-dev uuid-dev libmnl-dev gcc make autoconf autoconf-archive autogen automake pkg-config curl python python-yaml python-mysqldb python-psycopg2 nodejs lm-sensors netcat
+$ sudo apt install -y git zlib1g-dev uuid-dev libmnl-dev gcc make autoconf autoconf-archive autogen automake pkg-config curl python python-yaml python-mysqldb python-psycopg2 nodejs lm-sensors netcat
 
 * Cloning repo of netdata
-$ git clone https://github.com/firehol/netdata.git --depth=1 ~/netdata
-$ cd ~/netdata
-$ sudo ./netdata-installer.ssh
-$ Press [ENTER]
+$ bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait
 
 * Modify ram usage of netdata on /etc/netdata/netdata.conf
 >>>>
@@ -108,7 +105,7 @@ $ sudo service netdata restart
 **	Set-up Nginx & Vhost for Netdata
 */
 
-$ sudo apt install nginx
+$ sudo apt install -y nginx
 
 * Secure Nginx on /etc/nginx/nginx.conf
 >>>>
@@ -122,16 +119,7 @@ $ sudo service nginx restart
 $ mkdir ~/logs
 
 * Creation of self-encrypted SSL key and certificate
-$ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/selfsigned.key -out /etc/ssl/certs/selfsigned.crt
->
-Country Name (2 letter code) [AU]:FR
-State or Province Name (full name) [Some-State]:75
-Locality Name (eg, city) []:Paris
-Organization Name (eg, company) [Internet Widgits Pty Ltd]:rs1
-Organizational Unit Name (eg, section) []:rs1
-Common Name (e.g. server FQDN or YOUR name) []:192.168.56.2
-Email Address []:arsciand@student.42.fr
-=
+$ sudo openssl req -x509 -nodes -days 365 -newkey rsa:4096 -subj /C=FR/ST=75/L=Paris/O=rs1/OU=rs1/CN=192.168.56.2/emailAddress=arsciand@student.42.fr -keyout /etc/ssl/private/selfsigned.key -out /etc/ssl/certs/selfsigned.crt
 
 * Creation of Diffie-Hellman group
 $ sudo mkdir /etc/ssl/dhparam
