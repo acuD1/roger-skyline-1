@@ -229,6 +229,8 @@ $ sudo service nginx restart
 **		Configuration of Postfix
 */
 
+$ sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'No Configuration'"
+$ sudo debconf-set-selections <<< "postfix postfix/mailname string rs1"
 $ sudo apt install postfix
 
 * Configuration file in /etc/postfix/main.cf
