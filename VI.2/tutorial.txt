@@ -18,18 +18,18 @@ $ sudo vi /etc/netplan/01-netcfg.yaml
 # This file describes the network interfaces available on your system
 # For more information, see netplan(5).
 network:
-        version: 2
-        renderer: networkd
-        ethernets:
-                enp0s3:
-                        addresses: []
-                        dhcp4: yes
-                enp0s8:
-                        addresses: [192.168.56.2/30]
-                        dhcp4: no
-                        dhcp6: no
-                        nameservers:
-                                addresses: [8.8.8.8,8.8.8.4]
+		version: 2
+		renderer: networkd
+		ethernets:
+				enp0s3:
+						addresses: []
+						dhcp4: yes
+				enp0s8:
+						addresses: [192.168.56.2/30]
+						dhcp4: no
+						dhcp6: no
+						nameservers:
+								addresses: [8.8.8.8,8.8.8.4]
 ====
 
 $ sudo netplan apply
@@ -63,7 +63,7 @@ $ sudo service ssh restart
 */
 
 * Installation of dependency
-$ sudo apt install -y git zlib1g-dev uuid-dev libmnl-dev gcc make autoconf autoconf-archive autogen automake pkg-config curl python python-yaml python-mysqldb python-psycopg2 nodejs lm-sensors netcat
+$ sudo apt install -y curl
 
 * Cloning repo of netdata
 $ bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait
@@ -109,11 +109,14 @@ $ sudo apt install -y nginx
 
 * Secure Nginx on /etc/nginx/nginx.conf
 >>>>
+...
 - # server_tokens off;
 + server_token off;
+...
+default_type application/octet-stream;
++ limit_req_zone $binary_remote_addr zone=one:1m rate=20r/s;
+...
 ====
-
-$ sudo service nginx restart
 
 * Creation of logs directory
 $ mkdir ~/logs
@@ -146,12 +149,12 @@ server {
 	##BLOC
 
 server {
-        listen 443 ssl http2;
+	listen 443 ssl http2;
 	listen [::]:443 ssl http2;
 	server_name  192.168.56.2;
 
-        access_log  /home/arsciand/logs/netdata_acces.log;
-        error_log /home/arsciand/logs/netdata_error.log error;
+	access_log  /home/arsciand/logs/netdata_acces.log;
+	error_log /home/arsciand/logs/netdata_error.log error;
 
 	#SSL
 
@@ -159,17 +162,17 @@ server {
 	ssl_certificate	/etc/ssl/certs/selfsigned.crt;
 	ssl_certificate_key /etc/ssl/private/selfsigned.key;
 	ssl_dhparam /etc/ssl/dhparam/dhparam.pem;
-        ssl_protocols TLSv1.2;
-        ssl_prefer_server_ciphers on;
+	ssl_protocols TLSv1.2;
+	ssl_prefer_server_ciphers on;
 	ssl_ciphers "ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384";
-        ssl_ecdh_curve secp384r1;
-        ssl_session_cache shared:SSL:100m;
-        ssl_session_timeout  24h;
-        ssl_stapling on;
-        ssl_stapling_verify on;
+	ssl_ecdh_curve secp384r1;
+	ssl_session_cache shared:SSL:100m;
+	ssl_session_timeout  24h;
+	ssl_stapling on;
+	ssl_stapling_verify on;
 
-        resolver 8.8.8.8 8.8.4.4 208.67.222.222 208.67.220.220 216.146.35.35 216.146.36.36 valid=300s;
-        resolver_timeout 5s;
+	resolver 8.8.8.8 8.8.4.4 208.67.222.222 208.67.220.220 216.146.35.35 216.146.36.36 valid=300s;
+	resolver_timeout 5s;
 
 	add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
 	add_header Expect-CT "max-age=0";
@@ -181,6 +184,7 @@ server {
 	#BODY
 
 	location / {
+		limit_req zone=one burst=20 nodelay;
 		proxy_set_header X-Forwarded-Host $host;
 		proxy_set_header X-Forwarded-Server $host;
 		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -205,7 +209,7 @@ server {
 # Note some rules in this .conf may look overkill, but they are all necessary to obtain an A+ (Highest rate) rate on ssllabs.com
 
 $ sudo ln -s /etc/nginx/sites-available/netdata.conf /etc/nginx/sites-enabled/netdata.conf
-$ sudo ngninx -t
+$ sudo nginx -t
 #If everything Ok, you should only get this warning : nginx: [warn] "ssl_stapling" ignored, issuer certificate not found for certificate "/etc/ssl/certs/selfsigned.crt"
 #This happening if the certificate is not bundle properly with a registred CA.
 $ sudo service nginx restart
@@ -286,7 +290,7 @@ $ source /etc/profile.d/mail.sh
 $ sudo service postfix restart
 
 /*
-**      Configuration of the Firewall (ufw)
+**		Configuration of the Firewall (ufw)
 */
 
 * Disable ipv6 in /etc/default/ufw
@@ -307,8 +311,7 @@ $ sudo ufw reload
 **		Configuration of Fail2ban (DOS & Port Scan protection)
 */
 
-
-$ sudo apt install fail2ban postfix
+$ sudo apt install fail2ban -y
 
 * Use custom jail.local instead of jail.conf
 
