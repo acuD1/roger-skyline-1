@@ -300,7 +300,7 @@ $ sudo service postfix restart
 + IPV6=no
 ====
 
-$ sudo ufw enable
+$ sudo ufw enable -y
 $ sudo ufw default deny incoming
 $ sudo ufw default allow outgoing
 $ sudo ufw allow 2222/tcp
@@ -314,6 +314,56 @@ $ sudo ufw reload
 
 $ sudo apt install fail2ban -y
 
-* Use custom jail.local instead of jail.conf
+* Use custom jail.local instead of jail.conf in /etc/fail2ban/
+>>>>
+[DEFAULT]
+
+destmail = root@rs1
+sender = root@rs1
+mta = sendmail
+
+action = %(action_mwl)s
+
+[sshd]
+enabled = true
+port = 2222
+filter = sshd
+bantime = 1m
+findtime = 1m
+maxretry = 3
+
+[portscan]
+enabled  = true
+filter   = portscan
+logpath  = /var/log/ufw.log
+bantime = 1m
+findtime = 1m
+maxretry = 1
+
+[nginx-dos]
+enabled = true
+filter = nginx-dos
+action = iptables-multiport[name=ReqLimit, port="http,https", protocol=tcp]
+logpath = /home/arsciand/logs/netdata_error.log
+bantime = 10s
+findtime = 1m
+maxretry = 1
+====
+
+* Add DOS protection in /etc/fail2ban/filter.d/nginx-dos.conf
+>>>>
+[Definition]
+failregex = limiting requests, excess:.* by zone.*client: <HOST>
+ignoreregex =
+====
+
+* Add port scan protection
+>>>>
+[Definition]
+failregex = UFW BLOCK.* SRC=<HOST>
+ignoreregex =
+====
+
+$ sudo service fail2ban restart
 
 
