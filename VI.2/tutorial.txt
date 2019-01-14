@@ -2,6 +2,7 @@
 # User : arsciand
 # Password : 1319
 # Static IP : 192.168.56.2
+# mini.iso : http://archive.ubuntu.com/ubuntu/dists/bionic/main/installer-amd64/current/images/netboot/mini.iso
 
 /*
 **	Initialisation
@@ -29,7 +30,7 @@ network:
 						dhcp4: no
 						dhcp6: no
 						nameservers:
-								addresses: [8.8.8.8,8.8.8.4]
+								addresses: [1.1.1.1,1.0.0.1]
 ====
 
 $ sudo netplan apply
