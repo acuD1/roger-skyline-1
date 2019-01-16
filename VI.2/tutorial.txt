@@ -224,7 +224,7 @@ $ sudo service nginx restart
 
 $ sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'No Configuration'"
 $ sudo debconf-set-selections <<< "postfix postfix/mailname string rs1"
-$ sudo apt install -y postfix
+$ sudo apt install -y postfix mailtutils
 
 * Configuration file in /etc/postfix/main.cf
 >>>>
@@ -368,7 +368,7 @@ ignoreregex =
 $ sudo service fail2ban restart
 
 /*
-**	Configuration of update_script
+**	Configuration of update_script && notif_script
 */
 
 * Create update_script.sh
@@ -380,7 +380,21 @@ date |& tee -a /var/log/update_script.log && \
 	echo -e "\n" |& tee -a /var/log/update_script.log
 ====
 
+* Create notif_script.sh
+>>>>
+#!/bin/bash
+[[ -z `find /etc/crontab -mmin -1440` ]]
+if [ $? -eq 0 ]
+then
+	echo "/etc/crontab has not been modified since last check" | mailx -s 'Notification for /etc/crontab' root@rs1
+else
+	echo "/etc/crontab has been modified since last check" | mailx -s 'Notification for /etc/crontab' root@rs1
+fi
+====
+
 $ chmod +x update_script.sh
+$ chmod +x notif_script.sh
+
 
 * Modify crontab for root in /var/spool/cron/crontabs/root
 >>>>
@@ -391,3 +405,4 @@ $ chmod +x update_script.sh
 ====
 
 # Notifications mails will be sent to /root/Maildir/new/ sended by Postfix
+
