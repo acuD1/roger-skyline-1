@@ -300,12 +300,13 @@ $ sudo service postfix restart
 + IPV6=no
 ====
 
-$ sudo ufw enable -y
+$ sudo ufw enable
 $ sudo ufw default deny incoming
 $ sudo ufw default allow outgoing
 $ sudo ufw allow 2222/tcp
 $ sudo ufw allow 443/tcp
 $ sudo ufw allow Postfix
+$ sudo ufw logging low
 $ sudo ufw reload
 
 /*
@@ -335,7 +336,7 @@ maxretry = 3
 [portscan]
 enabled  = true
 filter   = portscan
-logpath  = /var/log/ufw.log
+logpath  = /var/log/syslog
 bantime = 1m
 findtime = 1m
 maxretry = 1
@@ -357,7 +358,7 @@ failregex = limiting requests, excess:.* by zone.*client: <HOST>
 ignoreregex =
 ====
 
-* Add port scan protection
+* Add port scan protection /etc/fail2ban/filter.d/portscan.conf
 >>>>
 [Definition]
 failregex = UFW BLOCK.* SRC=<HOST>
@@ -366,4 +367,27 @@ ignoreregex =
 
 $ sudo service fail2ban restart
 
+/*
+**	Configuration of update_script
+*/
 
+* Create update_script.sh
+>>>>
+#!/bin/bash
+date |& tee -a /var/log/update_script.log && \
+	apt-get update |& tee -a /var/log/update_script.log && \
+	apt-get upgrade |& tee -a /var/log/update_script.log && \
+	echo -e "\n" |& tee -a /var/log/update_script.log
+====
+
+$ chmod +x update_script.sh
+
+* Modify crontab for root in /var/spool/cron/crontabs/root
+>>>>
+...
+# m h  dom mon dow   command
++ 0 4 * * 1 /home/arsciand/update_script.sh
++ @reboot /home/arsciand/update_script.sh
+====
+
+# Notifications mails will be sent to /root/Maildir/new/ sended by Postfix
