@@ -402,7 +402,7 @@ $ chmod +x notif_script.sh
 # m h  dom mon dow   command
 + 0 4 * * 1 /home/arsciand/update_script.sh
 + @reboot /home/arsciand/update_script.sh
-0 0 * * * /home/arsciand/notif_script.sh
++ 0 0 * * * /home/arsciand/notif_script.sh
 ====
 
 # Notifications mails will be sent to /root/Maildir/new/ sended by Postfix
