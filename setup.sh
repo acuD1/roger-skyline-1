@@ -1,14 +1,12 @@
 #!/bin/bash
 # Used iso : mini.iso (netboot) ubuntu 18.04
-# This script is executed post install. Before that a local script is used to install openssh-server and 
-# add id_rsa.pub to the VM. Then, roger-skyline-1.git is cloned to run the deployment.
-# gitclone.sh
-# >>>>
-# #!/bin/bash
+# This script is executed post install. Make sure to have roger-skyline-1.git on your home folder
+# by executing git.sh
+# >>>> git.sh
 # sudo apt update -y && sudo apt upgrade -y
-# sudo apt install git openssh-server -y
+# sudo apt install git -y
 # git clone https://github.com/acuD1/roger-skyline-1.git
-# ====
+# =====
 #
 # Initialisation for deployment
 sudo apt update -y && sudo apt upgrade -y
