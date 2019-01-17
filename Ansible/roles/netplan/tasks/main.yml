@@ -6,4 +6,5 @@
       owner: root
       group: root
       backup: yes
-      notify: Apply Netplan
+      notify:
+      - Apply Netplan
