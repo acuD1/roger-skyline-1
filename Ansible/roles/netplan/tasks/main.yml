@@ -6,6 +6,8 @@
       owner: root
       group: root
       backup: yes
+  register: netplan
 
 - name: Apply Netplan
   command: netplan apply
+  when: netplan.changed

@@ -12,4 +12,4 @@ network:
             dhcp4: no
             dhcp6: no
             nameservers:
-                addresses: [8.8.8.8,8.8.8.4]
+                addresses: [1.1.1.1,1.0.0.1]
