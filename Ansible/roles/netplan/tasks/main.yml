@@ -1,0 +1,9 @@
+---
+- name: Replace 01-netcfg.yaml for Static IP setup
+  copy:
+      src: 01-netcfg.yaml
+      dest: /etc/netplan/
+      owner: root
+      group: root
+      backup: yes
+      notify: Apply Netplan
