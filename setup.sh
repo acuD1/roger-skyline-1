@@ -18,3 +18,5 @@ cd ansible-play
 virtualenv .venv
 source .venv/bin/activate
 pip install ansible
+cd ~/roger-skyline.git/Ansible
+ansible-playbook -i ./hosts rs1-setup.yml
