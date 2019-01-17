@@ -3,6 +3,7 @@
 sudo apt update -y && sudo apt upgrade -y
 sudo apt install vim ccze python3.6 python-pip
 sudo pip install -U virtualenv
+cd ~/
 mkdir ansible-play
 cd ansible-play
 virtualenv .venv
