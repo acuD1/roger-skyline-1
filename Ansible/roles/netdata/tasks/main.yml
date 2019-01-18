@@ -15,14 +15,15 @@
         url: https://my-netdata.io/kickstart.sh
         dest: /home/arsciand/
         mode: 0755
-  when: netdata
+  when: netdata.stat.exists == false
 
 - name: Executing kickstart.sh (Netdata installation script)
   command: sh kickstart.sh --dont-wait
   args:
       chdir: /home/arsciand/
   register: output
-  when: netdata
+  when: netdata.stat.exists == false
 
 - debug:
       var: output
+  when: netdata.stat.exists == false
