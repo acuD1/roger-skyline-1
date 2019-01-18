@@ -1,10 +1,12 @@
 ---
 - name: Start OpenSSH Server
+  become : yes
   service:
       name: ssh
       state: started
 
 - name: Restart OpenSSH Server
+  become : yes
   service:
       name: ssh
       state: restarted
