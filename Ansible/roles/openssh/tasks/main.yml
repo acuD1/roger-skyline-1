@@ -28,7 +28,7 @@
 
 - name: Modify /etc/ssh/sshd_config
   replace:
-      path: "/etc/ssh/sshd_config"
+      path: /etc/ssh/sshd_config
       regexp: "{{ item.regexp }}"
       replace: "{{ item.replace }}"
   with_items:

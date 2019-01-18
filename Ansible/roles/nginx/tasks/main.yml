@@ -8,13 +8,24 @@
 - name: Adjusting /etc/nginx/nginx.conf for security improvement
   replace:
       path: /etc/nginx/nginx.conf
-      regexp: '^#(.*# server_tokens off;.*)'
-      replace: '\1'
+      regexp: '# server_tokens off;'
+      replace: 'server_tokens off;'
       backup: yes
 
 - name: Adding DOS conf for Netdata in /etc/nginx/conf
   lineinfile:
       path: /etc/nginx/nginx.conf
-      line: limit_req_zone $binary_remote_addr zone=one:1m rate=20r/s;
+      line: "\tlimit_req_zone $binary_remote_addr zone=one:1m rate=20r/s;"
       insertafter: default_type*
       backup: yes
+
+- name: Creation of logs folder
+  file:
+      path: /home/arsciand/logs
+      owner: arsciand
+      group: arsciand
+
+- name: Creation of self-encrypted SSL key and certificate
+  command: sudo openssl req -x509 -nodes -days 365 -newkey rsa:4096 \
+      -subj /C=FR/ST=75/L=Paris/O=rs1/OU=rs1/CN=192.168.56.2/emailAddress=arsciand@student.42.fr \
+      -keyout /etc/ssl/private/selfsigned.key -out /etc/ssl/certs/selfsigned.crt
