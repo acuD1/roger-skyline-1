@@ -10,12 +10,18 @@
       path: /etc/netdata
   register: netdata
 
-- name: Runing Netdata installaion script
-  command: curl https://my-netdata.io/kickstart.sh > kickstart.sh && sh kickstart.sh --dont-wait
-  args:
-      warn: false
+- name: Cloning Netdata installation script
+  get_url: https://my-netdata.io/kickstart.sh
+  dest: /home/arsciand/
+  mode: 0755
   when: netdata
+
+- name: Executing kickstart.sh (Netdata installation script)
+  command: sh kickstart.sh --dont-wait
+  args:
+      chdir: /home/arsciand/
   register: output
+  when: netdata
 
 - debug:
       var: output
