@@ -27,6 +27,6 @@
       group: arsciand
 
 - name: Creation of self-encrypted SSL key and certificate
-  command: sudo openssl req -x509 -nodes -days 365 -newkey rsa:4096 \
+  command: openssl req -x509 -nodes -days 365 -newkey rsa:4096 \
       -subj /C=FR/ST=75/L=Paris/O=rs1/OU=rs1/CN=192.168.56.2/emailAddress=arsciand@student.42.fr \
       -keyout /etc/ssl/private/selfsigned.key -out /etc/ssl/certs/selfsigned.crt
