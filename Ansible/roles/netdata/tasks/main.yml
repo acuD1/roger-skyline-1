@@ -32,8 +32,8 @@
 - name: Modifying /etc/netdata/netdata.conf memory usage
   lineinfile:
       path: "/etc/netdata/netdata.conf"
-      regexp: '^# history 3996'
-      line: '^history 3600'
+      regexp: '^# history = 3996'
+      line: '^history = 3600'
       backup: yes
   notify:
         - Restart Netdata
