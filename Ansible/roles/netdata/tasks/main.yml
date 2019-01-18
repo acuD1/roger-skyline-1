@@ -11,9 +11,10 @@
   register: netdata
 
 - name: Cloning Netdata installation script
-  get_url: https://my-netdata.io/kickstart.sh
-  dest: /home/arsciand/
-  mode: 0755
+  get_url:
+        url: https://my-netdata.io/kickstart.sh
+        dest: /home/arsciand/
+        mode: 0755
   when: netdata
 
 - name: Executing kickstart.sh (Netdata installation script)
