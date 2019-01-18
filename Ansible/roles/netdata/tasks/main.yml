@@ -30,8 +30,11 @@
   when: netdata.stat.exists == false
 
 - name: Modifying /etc/netdata/netdata.conf memory usage
-  command: sed -i '21/# history = 3996/history = 3600/' /etc/netdata/netdata.conf
-  backup: yes
+  lineinfile:
+      dest: /etc/netdata/netdata.conf
+      regexp: '# history = 3996'
+      line: 'history = 3600'
+      backup: yes
   notify:
         - Restart Netdata
 
