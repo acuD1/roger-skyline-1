@@ -14,7 +14,7 @@
 
 - name: Creation of .ssh
   file:
-      path: ~/.ssh
+      path: /home/arsciand/.ssh
       state: directory
       owner: arsciand
       group: arsciand
@@ -22,7 +22,7 @@
 - name: Seting up authorized_keys file with rs1-key.pub
   copy:
       src: authorized_keys
-      dest: ~/.ssh/
+      dest: /home/arsciand/.ssh/
       owner: arsciand
       group: arsciand
 
