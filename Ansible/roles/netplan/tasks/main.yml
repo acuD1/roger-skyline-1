@@ -11,7 +11,3 @@
 - name: Apply Netplan
   command: netplan apply
   when: netplan.changed
-  register: output
-
-- debug:
-      var: output

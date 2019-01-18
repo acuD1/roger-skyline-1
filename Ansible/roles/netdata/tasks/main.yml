@@ -13,4 +13,8 @@
 - name: Runing Netdata installaion script
   commands: bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait
   when: netdata.changed
+  register: output
+
+- debug:
+      var: output
 
