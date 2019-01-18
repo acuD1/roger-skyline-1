@@ -48,7 +48,7 @@
   stat:
       path: /etc/ssl/dhparam.pem
   register: dhparam
-      
+
 - name: Creating Diffie-Hellma group
   command: openssl dhparam -dsaparam -out /etc/ssl/dhparam/dhparam.pem 4096
   when: dhparam.stat.exists == false
@@ -63,7 +63,12 @@
   register: vhost
 
 - name: Symliking netdata.conf to /etc/nginx/sites-enabled
-  command: ln -s /etc/nginx/sites-available/netdata.conf /etc/nginx/sites-enabled/netdata.conf
+  file:
+      src: /etc/nginx/sites-available/netdata.conf
+      dest: /etc/nginx/sites-enabled/netdata.conf
+      owner: root
+      group: root
+      state: link
   when : vhost.changed
   notify:
       - Restart Nginx
