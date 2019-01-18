@@ -1,0 +1,16 @@
+---
+- name: Installation of curl
+  apt:
+      pkg: curl
+      state: present
+      update_cache: true
+
+- name: Check if Netdata is installed
+  stat:
+      path: /etc/netdata
+  register: netdata
+
+- name: Runing Netdata installaion script
+  commands: bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait
+  when: netdata.changed
+

@@ -6,4 +6,5 @@
   roles:
       - netplan
       - openssh
+      - netdata
 
