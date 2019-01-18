@@ -11,10 +11,11 @@
   register: netdata
 
 - name: Runing Netdata installaion script
-  command: bash <(curl -Ss https://my-netdata.io/kickstart.sh) --dont-wait
-  when: netdata.changed
+  command: curl https://my-netdata.io/kickstart.sh > kickstart.sh && sh kickstart.sh --dont-wait
+  args:
+      warn: false
+  when: netdata
   register: output
 
 - debug:
       var: output
-
