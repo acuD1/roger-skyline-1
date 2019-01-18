@@ -1,10 +1,10 @@
 ---
 - name: Installation of OpenSSH Server
+  ignore_errors: yes
   apt:
       pkg: openssh-server
       state: present
       update_cache : true
-  ignore_errors: yes
 
 - name: Starting OpenSSH Server
   service:
