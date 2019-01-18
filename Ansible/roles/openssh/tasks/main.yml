@@ -4,6 +4,7 @@
       pkg: openssh-server
       state: present
       update_cache : true
+  ignore_errors: yes
 
 - name: Starting OpenSSH Server
   service:

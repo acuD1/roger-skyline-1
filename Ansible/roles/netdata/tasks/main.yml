@@ -4,6 +4,7 @@
       pkg: curl
       state: present
       update_cache: true
+  ignore_errors: yes
 
 - name: Check if Netdata is installed
   stat:
