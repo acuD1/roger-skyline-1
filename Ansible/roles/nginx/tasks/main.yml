@@ -22,6 +22,7 @@
 - name: Creation of logs folder
   file:
       path: /home/arsciand/logs
+      state: directory
       owner: arsciand
       group: arsciand
 
