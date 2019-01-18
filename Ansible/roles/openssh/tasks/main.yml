@@ -4,8 +4,12 @@
       pkg: openssh-server
       state: present
       update_cache : true
-  notify:
-      - Start OpenSSH Server
+
+- name: Starting OpenSSH Server
+  server:
+        name: ssh
+        enabled: yes
+        state: started
 
 - name: Creation of .ssh
   file:
@@ -27,9 +31,9 @@
       regexp: "{{ item.regexp }}"
       replace: "{{ item.replace }}"
   with_items:
-      - { regexp: '#Port 22', replace: 'Port 2222'}
-      - { regexp: '#PermitRootLogin prohibit-password', replace: 'PermitRootLogin no'}
-      - { regexp: '#PasswordAuthentication yes', replace: 'PasswordAuthentication no'}
+      - {regexp: '#Port 22', replace: 'Port 2222'}
+      - {regexp: '#PermitRootLogin prohibit-password', replace: 'PermitRootLogin no'}
+      - {regexp: '#PasswordAuthentication yes', replace: 'PasswordAuthentication no'}
   notify:
-      - Restart OpenSSH Server
+      - Restarted OpenSSH Server
 
