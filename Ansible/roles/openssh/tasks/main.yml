@@ -6,7 +6,7 @@
       update_cache : true
 
 - name: Starting OpenSSH Server
-  server:
+  service:
         name: ssh
         enabled: yes
         state: started
