@@ -7,6 +7,20 @@
   notify:
       - Start OpenSSH Server
 
+- name: Creation of .ssh
+  file:
+      path: ~/.ssh
+      state: directory
+      owner: arsciand
+      group: arsciand
+
+- name: Seting up authorized_keys file with rs1-key.pub
+  copy:
+      src: authorized_keys
+      dest: ~/.ssh/
+      owner: arsciand
+      group: arsciand
+
 - name: Modify /etc/ssh/sshd_config
   replace:
       path: "/etc/ssh/sshd_config"
