@@ -11,4 +11,5 @@
 # Initialisation for deployment
 sudo apt update -y && sudo apt upgrade -y
 sudo apt install vim ccze ansible -y
-ansible-playbook -i ~/roger-skyline-1/Ansible/hosts ~/roger-skyline-1/Ansible/rs1-setup.yml
+ansible-playbook -i ~/roger-skyline-1/Ansible/hosts ~/roger-skyline-1/Ansible/rs1-setup.yml \
+	--user=arsciand --extra-vars "ansible_sudo_pass=1319"
