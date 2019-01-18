@@ -35,5 +35,5 @@
       - {regexp: '#PermitRootLogin prohibit-password', replace: 'PermitRootLogin no'}
       - {regexp: '#PasswordAuthentication yes', replace: 'PasswordAuthentication no'}
   notify:
-      - Restarted OpenSSH Server
+      - Restart OpenSSH Server
 
