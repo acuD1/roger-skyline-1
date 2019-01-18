@@ -37,21 +37,27 @@
       -keyout /etc/ssl/private/selfsigned.key -out /etc/ssl/certs/selfsigned.crt
   when: openssl.stat.exists == false
 
+- name: Check for dhparam folder
+  stat:
+      path: /etc/ssl/dhparam
+  register: dhparam_folder
+
 - name: Creation of /etc/ssl/dhparam
   file:
       path: /etc/ssl/dhparam
       state: directory
       owner: root
       group: root
+  when: dhparam_folder.stat.exists == false
 
 - name: Check for dhparam.pem
   stat:
-      path: /etc/ssl/dhparam.pem
-  register: dhparam
+      path: /etc/ssl/dhparam/dhparam.pem
+  register: dhparam_file
 
 - name: Creating Diffie-Hellma group
   command: openssl dhparam -dsaparam -out /etc/ssl/dhparam/dhparam.pem 4096
-  when: dhparam.stat.exists == false
+  when: dhparam_file.stat.exists == false
 
 - name: Creation of Netdata Vhost
   copy:
