@@ -1,0 +1,32 @@
+[DEFAULT]
+
+destmail = root@rs1
+sender = root@rs1
+mta = sendmail
+
+action = %(action_mwl)s
+
+[sshd]
+enabled = true
+port = 2222
+filter = sshd
+bantime = 1m
+findtime = 1m
+maxretry = 3
+
+[portscan]
+enabled  = true
+filter   = portscan
+logpath  = /var/log/ufw.log
+bantime = 1m
+findtime = 1m
+maxretry = 1
+
+[nginx-dos]
+enabled = true
+filter = nginx-dos
+action = iptables-multiport[name=ReqLimit, port="http,https", protocol=tcp]
+logpath = /home/arsciand/logs/netdata_error.log
+bantime = 10s
+findtime = 1m
+maxretry = 1

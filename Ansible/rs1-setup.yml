@@ -10,4 +10,5 @@
       - nginx
       - postfix
       - ufw
+      - fail2ban
 
