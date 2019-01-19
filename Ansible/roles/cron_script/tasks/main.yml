@@ -7,6 +7,9 @@
       group: arsciand
       mode: a+x
       backup: yes
+  with_items:
+      - update_script.sh
+      - notif_script.sh
 
 - name: Updating crontab for root in /var/spool/cron/crontabs/root
   lineinfile:
