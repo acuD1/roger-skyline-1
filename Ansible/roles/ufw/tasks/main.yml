@@ -4,12 +4,15 @@
       path: /etc/default/ufw
       regexp: 'IPV6=yes'
       replace: 'IPV6=no'
+
+- name: Enabling UFW
+  ufw:
+      state: enabled
   register: ufw
 
 - name: Configuring UFW
   command: "{{ item }}"
   with_items:
-      - ufw enable
       - ufw default deny incoming
       - ufw default allow outgoing
       - ufw allow 2222/tcp
