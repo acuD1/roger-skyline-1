@@ -23,6 +23,6 @@
   with_items:
       - nginx-dos.conf
       - portscan.conf
-  - notify:
+  notify:
       - Restart Fail2Ban
 
