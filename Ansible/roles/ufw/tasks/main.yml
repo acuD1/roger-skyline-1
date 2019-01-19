@@ -1,0 +1,22 @@
+---
+- name: Disabling ipv6 in /etc/default/ufw
+  replace:
+      path: /etc/default/ufw
+      regexp: 'IPV6=yes'
+      replace: 'IPV6=no'
+  register: ufw
+
+- name: Configuring UFW
+  command: "{{ item }}"
+  with_items:
+      - ufw enable
+      - ufw default deny incoming
+      - ufw default allow outgoing
+      - ufw allow 2222/tcp
+      - ufw allow 443/tcp
+      - ufw allow Postfix
+      - ufw logging low
+  when: ufw.changed
+  notfiy:
+      - Restart UFW
+
