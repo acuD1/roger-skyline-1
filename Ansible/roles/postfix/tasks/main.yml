@@ -10,6 +10,7 @@
       debconf-set-selections <<< "postfix postfix/main_mailer_type string 'No Configuration'"
       debconf-set-selections <<< "postfix postfix/mailname string rs1"
   when: postfix.stat.exists == false
+  register: postfix_installed
 
 - name: Installation of Postfix
   apt:
@@ -45,6 +46,6 @@
       postmap /etc/postfix/virtual
       echo 'export MAIL=~/Maildir' | sudo tee -a /etc/bash.bashrc | sudo tee -a /etc/profile.d/mail.sh
       source /etc/profile.d/mail.sh
-  when: postfix.changed
+  when: postfix_installed.changed
   notify:
       - Restart Postfix
