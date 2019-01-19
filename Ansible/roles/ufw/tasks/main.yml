@@ -17,6 +17,6 @@
       - ufw allow Postfix
       - ufw logging low
   when: ufw.changed
-  notfiy:
+  notify:
       - Restart UFW
 
