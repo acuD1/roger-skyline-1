@@ -9,8 +9,7 @@
 # =====
 #
 # Initialisation for deployment
-sudo rm -rf /var/lib/apt/lists/* #Fixing apt update errors
-sudo apt update -y && sudo apt upgrade -y
+sudo apt -o Acquire::Check-Valid-Until=false update -y && sudo apt upgrade -y
 sudo apt install vim ccze ansible -y
 ansible-playbook -i ~/roger-skyline-1/Ansible/hosts ~/roger-skyline-1/Ansible/rs1-setup.yml \
 	--user=arsciand --extra-vars "ansible_sudo_pass=1319"
