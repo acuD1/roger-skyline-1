@@ -45,7 +45,11 @@
   with_items:
       - postmap /etc/postfix/virtual
       - echo 'export MAIL=~/Maildir' | sudo tee -a /etc/bash.bashrc | sudo tee -a /etc/profile.d/mail.sh
-      - source /etc/profile.d/mail.sh
   when: postfix_installed.changed
+  register: postfix_db
+
+- name: Source mail.sh
+  command: source /etc/profile.d/mail.sh
+  when: postfix_db.changed
   notify:
       - Restart Postfix
