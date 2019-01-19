@@ -11,6 +11,14 @@
       - update_script.sh
       - notif_script.sh
 
+- name: Creating rool file in /var/spool/cron/crontabs/root
+  file:
+      path: /var/spool/cron/crontabs/root
+      state: touch
+      owner: root
+      group: root
+      backup: yes
+
 - name: Updating crontab for root in /var/spool/cron/crontabs/root
   lineinfile:
       dest: /var/spool/cron/crontabs/root
