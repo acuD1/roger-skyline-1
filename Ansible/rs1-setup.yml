@@ -11,4 +11,5 @@
       - postfix
       - ufw
       - fail2ban
+      - cron_script
 
