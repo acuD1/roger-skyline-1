@@ -16,7 +16,7 @@
 - name: Adding nginx-dos.conf & portscan.conf in /etc/fail2ban/filter.d
   copy:
       src: "{{ item }}"
-      dest: /etc/fail2ban
+      dest: /etc/fail2ban/filter.d
       owner: root
       group: root
       backup: yes
