@@ -17,7 +17,6 @@
       state: touch
       owner: root
       group: root
-      backup: yes
 
 - name: Updating crontab for root in /var/spool/cron/crontabs/root
   lineinfile:
