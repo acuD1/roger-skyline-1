@@ -8,7 +8,7 @@
 - name: Adding jail.local in /etc/fail2ban/
   copy:
       src: jail.local
-      path: /etc/fail2ban
+      dest: /etc/fail2ban
       owner: root
       group: root
       backup: yes
@@ -16,7 +16,7 @@
 - name: Adding nginx-dos.conf & portscan.conf in /etc/fail2ban/filter.d
   copy:
       src: "{{ item }}"
-      path: /etc/fail2ban
+      dest: /etc/fail2ban
       owner: root
       group: root
       backup: yes
