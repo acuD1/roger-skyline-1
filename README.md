@@ -54,3 +54,4 @@ After the execution of the Ansible playbook, you can check if eveything is ok by
 
 ## Method 2 (By command line)
 
+See ```tutorial.txt```
