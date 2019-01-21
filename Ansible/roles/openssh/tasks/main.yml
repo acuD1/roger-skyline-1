@@ -5,7 +5,9 @@
       pkg: openssh-server
       state: present
       update_cache : true
-  debugger: always
+  register: debug
+
+- debug: debug.stdout.lines
 
 - name: Starting OpenSSH Server
   service:
