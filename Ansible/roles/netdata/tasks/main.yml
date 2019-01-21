@@ -8,7 +8,7 @@
 
 - name: Check if Netdata is installed
   stat:
-      path: /etc/netdata
+      path: /opt/netdata
   register: netdata
 
 - name: Executing kickstart.sh (Netdata installation script)
