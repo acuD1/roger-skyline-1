@@ -17,6 +17,7 @@
 - name: Formating partition in ext4
   command: mkfs.ext4 /dev/sda3
   when: sda3_created.changed
+  register: sda3_formated
 
 - name: Creating mountpoint for /dev/sda3 in /tmp
   file:
@@ -24,6 +25,7 @@
       state: directory
       owner: arsciand
       group: arsciand
+  when: sda3_formated.changed
 
 - name: Mounting /dev/sda3 to /tmp/rs1-partition
   mount:
