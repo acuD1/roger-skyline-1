@@ -12,11 +12,11 @@
   register: netdata
 
 - name: Cloning Netdata installation script
-    get_url:
+  get_url:
         url: https://my-netdata.io/kickstart-static64.sh
         dest: /home/arsciand/
         mode: 0755
-    when: netdata.stat.exists == false
+  when: netdata.stat.exists == false
 
 - name: Executing kickstart.sh (Netdata installation script)
   command: sh kickstart-static64.sh --dont-wait
