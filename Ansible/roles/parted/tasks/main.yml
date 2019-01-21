@@ -1,0 +1,31 @@
+---
+- name: Checking /dev/sda3
+  stat:
+      path: /dev/sda3
+  register: sda3
+
+- name: Creation of a 4.2 GB parition
+  parted:
+      device: /dev/sda
+      number: 1
+      state: present
+      part_end: 4.2GB
+  when: sda3.stat.exists == false
+  register: sda3_created
+
+- name: Formating partition in ext4
+  command: mkfs.ext4 /dev/sda3
+  when: sda3_created.changed
+
+- name: Creating mountpoint for /dev/sda3 in /tmp
+  file:
+      path: /tmp/rs1-partition
+      state: directory
+      owner: arsciand
+      group: arsciand
+  register: mountpoint
+
+- name: Mounting /dev/sda3 to /tmp/rs1-partition
+  command: mount /dev/sd3 /tmp/rs1-partition
+  when: mountpoint.changed
+

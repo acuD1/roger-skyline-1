@@ -1,5 +1,5 @@
 ---
-- name: Installing of curl
+- name: Installing curl
   ignore_errors: yes
   apt:
       pkg: curl

@@ -55,7 +55,7 @@
       path: /etc/ssl/dhparam/dhparam.pem
   register: dhparam_file
 
-- name: Creating Diffie-Hellma group
+- name: Creating Diffie-Hellman group
   command: openssl dhparam -dsaparam -out /etc/ssl/dhparam/dhparam.pem 4096
   when: dhparam_file.stat.exists == false
 
