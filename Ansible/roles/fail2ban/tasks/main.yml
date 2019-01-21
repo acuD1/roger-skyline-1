@@ -4,6 +4,8 @@
       pkg: fail2ban
       state: present
       update_cache: yes
+  register: debug
+- debug: var=debug.stdout.lines
 
 - name: Adding jail.local in /etc/fail2ban/
   copy:
