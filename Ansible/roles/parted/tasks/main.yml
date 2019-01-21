@@ -6,7 +6,7 @@
 
 - name: Creation of a 4.2 GB parition
   parted:
-      device: /dev/sda
+      device: /dev/sda3
       number: 1
       state: present
       part_end: 4.2GB
