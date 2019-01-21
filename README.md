@@ -19,6 +19,7 @@ Thoses pre-requies are needed to work fully with Ansible for an automated deploy
 - Set username to ```arsciand```
 - Set password to ```1319```
 - Add the ```assets/rs1-key``` and ```assets/rs1-key.pub``` to your ```~/.ssh``` folder
+- The passphrase for this key is ```qwerty```
 
 ## Method 1 (Fully automated deployment with Ansible)
 
