@@ -7,7 +7,7 @@
       update_cache : true
   register: debug
 
-- debug: debug.stdout.lines
+- debug: var=debug.stdout.lines
 
 - name: Starting OpenSSH Server
   service:
