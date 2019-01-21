@@ -30,15 +30,6 @@
       var: output
   when: netdata.stat.exists == false
 
-- name: Modifying /etc/netdata/netdata.conf memory usage
-  replace:
-      path: /etc/netdata/netdata.conf
-      regexp: '# history = 3996'
-      replace: 'history = 3600'
-      backup: yes
-  notify:
-        - Restart Netdata
-
 - name: Adding optimisation of Netdata in /etc/rc.local
   copy:
       src: rc.local
@@ -46,4 +37,6 @@
       owner: root
       group: root
       mode: a+x
+  notify:
+        - Restart Netdata
 
