@@ -52,6 +52,8 @@ After the execution of the Ansible playbook, you can check if eveything is ok by
 ./roger-skyline-1/rerun.sh
 ```
 
+You can now open your browser at https://192.168.56.2, it shows Netdata
+
 ## Method 2 (By command line)
 
 See ```tutorial.txt```
