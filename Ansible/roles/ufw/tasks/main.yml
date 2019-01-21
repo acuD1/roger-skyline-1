@@ -1,16 +1,16 @@
 ---
-- name: Disabling ipv6 in /etc/default/ufw
+- name: Disables ipv6 in /etc/default/ufw
   replace:
       path: /etc/default/ufw
       regexp: 'IPV6=yes'
       replace: 'IPV6=no'
 
-- name: Enabling UFW
+- name: Enables UFW
   ufw:
       state: enabled
   register: ufw
 
-- name: Configuring UFW
+- name: Configures UFW
   command: "{{ item }}"
   with_items:
       - ufw default deny incoming
@@ -21,5 +21,5 @@
       - ufw logging low
   when: ufw.changed
   notify:
-      - Restart UFW
+      - Restarts UFW
 

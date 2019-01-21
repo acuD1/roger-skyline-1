@@ -1,5 +1,5 @@
 ---
-- name: Creating update_script.sh & notif_script.sh for crontab in /home/arsciand
+- name: Creates update_script.sh & notif_script.sh for crontab in /home/arsciand
   copy:
       src: "{{ item }}"
       dest: /home/arsciand
@@ -13,7 +13,7 @@
   register: cron
 
 - name: Creates an entry "0 4 * * 1 /home/arsciand/update_script.sh" for cron
-  cron: 
+  cron:
       name: "update_script.sh 0 4 * * 1"
       weekday: 1
       hour: 4
@@ -28,7 +28,7 @@
       user: root
       job: "/home/arsciand/update_script.sh"
 
-- name: Create an entry "0 0 * * * /home/arsciand/notif_script.sh" for cron
+- name: Creates an entry "0 0 * * * /home/arsciand/notif_script.sh" for cron
   cron:
       name: "notfi_script.sh 0 0 * * *"
       hour: 0

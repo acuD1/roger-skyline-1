@@ -1,5 +1,5 @@
 ---
-- name: Restart OpenSSH Server
+- name: Restarts OpenSSH Server
   service:
       name: ssh
       state: restarted

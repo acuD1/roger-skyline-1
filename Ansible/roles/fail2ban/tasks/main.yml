@@ -1,11 +1,11 @@
 ---
-- name: Installation of Fail2Ban
+- name: Installs Fail2Ban
   apt:
       pkg: fail2ban
       state: present
       update_cache: yes
 
-- name: Adding jail.local in /etc/fail2ban/
+- name: Adds jail.local in /etc/fail2ban/
   copy:
       src: jail.local
       dest: /etc/fail2ban
@@ -13,7 +13,7 @@
       group: root
       backup: yes
 
-- name: Adding nginx-dos.conf & portscan.conf in /etc/fail2ban/filter.d
+- name: Adds nginx-dos.conf & portscan.conf in /etc/fail2ban/filter.d
   copy:
       src: "{{ item }}"
       dest: /etc/fail2ban/filter.d
@@ -24,5 +24,5 @@
       - nginx-dos.conf
       - portscan.conf
   notify:
-      - Restart Fail2Ban
+      - Restarts Fail2Ban
 
