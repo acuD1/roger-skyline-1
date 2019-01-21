@@ -10,6 +10,6 @@
 #
 # Initialisation for deployment
 sudo apt -o Acquire::Check-Valid-Until=false update -y && sudo apt upgrade -y
-sudo apt install vim ccze ansible autoconf-archive autogen -y
+sudo apt install vim ccze ansible -y
 ansible-playbook -i ~/roger-skyline-1/Ansible/hosts ~/roger-skyline-1/Ansible/rs1-setup.yml \
 	--user=arsciand --extra-vars "ansible_sudo_pass=1319"
