@@ -224,7 +224,7 @@ $ sudo service nginx restart
 
 $ sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'No Configuration'"
 $ sudo debconf-set-selections <<< "postfix postfix/mailname string rs1"
-$ sudo apt install -y postfix mailtutils
+$ sudo apt install -y postfix mailutils
 
 * Configuration file in /etc/postfix/main.cf
 >>>>
@@ -406,3 +406,13 @@ $ chmod +x notif_script.sh
 ====
 
 # Notifications mails will be sent to /root/Maildir/new/ sended by Postfix
+
+/*
+**	Creating a partition of 4.2 GB mounted in /tmp/rs1-partition
+*/
+
+# You must have configured a partition with VirtualBox of 8GB and during installation only a 3GB partition for / and 1 GB for [SWAP]
+
+$ sudo parted -a optimal /dev/sda mkpart primary ext4 4000 8200
+$ sudo mkfs.ext4 /dev/sda3
+$ sudo mount /dev/sda3 /tmp/rs1-partition
