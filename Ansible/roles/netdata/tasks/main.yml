@@ -1,24 +1,24 @@
 ---
-- name: Installs of curl
+- name: Installing of curl
   ignore_errors: yes
   apt:
       pkg: curl
       state: present
       update_cache: true
 
-- name: Checks if Netdata is installed
+- name: Checking if Netdata is installed
   stat:
       path: /opt/netdata
   register: netdata
 
-- name: Clones Netdata installation script
+- name: Cloning Netdata installation script
   get_url:
         url: https://my-netdata.io/kickstart-static64.sh
         dest: /home/arsciand/
         mode: 0755
   when: netdata.stat.exists == false
 
-- name: Executes kickstart.sh (Netdata installation script)
+- name: Executing kickstart.sh (Netdata installation script)
   command: sh kickstart-static64.sh --dont-wait
   args:
       chdir: /home/arsciand/
@@ -30,7 +30,7 @@
       var: output
   when: netdata.stat.exists == false
 
-- name: Adds optimisation of Netdata in /etc/rc.local
+- name: Adding optimisation of Netdata in /etc/rc.local
   copy:
       src: rc.local
       dest: /etc/

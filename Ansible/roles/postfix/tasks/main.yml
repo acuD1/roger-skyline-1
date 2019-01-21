@@ -1,10 +1,10 @@
 ---
-- name: Checks Postfix installation
+- name: Checking Postfix installation
   stat:
       path: /etc/postfix
   register: postfix
 
-- name: Initialises Postfix installation
+- name: Initialising Postfix installation
   command: "{{ item }}"
   with_items:
       - debconf-set-selections <<< "postfix postfix/main_mailer_type string 'No Configuration'"
@@ -12,19 +12,19 @@
   when: postfix.stat.exists == false
   register: postfix_installed
 
-- name: Installs Postfix
+- name: Installing Postfix
   apt:
       pkg: postfix
       state: present
       update_cache: yes
 
-- name: Installs Mailutils
+- name: Installing Mailutils
   apt:
       pkg: mailutils
       state: present
       update_cache: yes
 
-- name: Configures /etc/postfix/main.cf
+- name: Configuring /etc/postfix/main.cf
   copy:
       src: main.cf
       dest: /etc/postfix/main.cf
@@ -32,7 +32,7 @@
       group: root
       backup: yes
 
-- name: Adds virtual aliases
+- name: Adding virtual aliases
   copy:
       src: virtual
       dest: /etc/postfix/
@@ -40,7 +40,7 @@
       group: root
       backup: yes
 
-- name: Generates DB and Maildir
+- name: Generating DB and Maildir
   command: "{{ item }}"
   with_items:
       - postmap /etc/postfix/virtual

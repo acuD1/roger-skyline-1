@@ -1,32 +1,33 @@
 ---
-- name: Installs OpenSSH Server
+- name: Installing OpenSSH Server
   ignore_errors: yes
   apt:
       pkg: openssh-server
       state: present
       update_cache : true
+  debugger: always
 
-- name: Starts OpenSSH Server
+- name: Starting OpenSSH Server
   service:
         name: ssh
         enabled: yes
         state: started
 
-- name: Creates ~/.ssh
+- name: Creating ~/.ssh
   file:
       path: /home/arsciand/.ssh
       state: directory
       owner: arsciand
       group: arsciand
 
-- name: Adds authorized_keys file with rs1-key.pub
+- name: Adding authorized_keys file with rs1-key.pub
   copy:
       src: authorized_keys
       dest: /home/arsciand/.ssh/
       owner: arsciand
       group: arsciand
 
-- name: Modifies /etc/ssh/sshd_config
+- name: Modifying /etc/ssh/sshd_config
   replace:
       path: /etc/ssh/sshd_config
       regexp: "{{ item.regexp }}"

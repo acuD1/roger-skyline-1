@@ -1,48 +1,48 @@
 ---
-- name: Installs Nginx
+- name: Installing Nginx
   apt:
       pkg: nginx
       state: present
       update_cache: yes
 
-- name: Adjusts /etc/nginx/nginx.conf for security improvement
+- name: Adjusting /etc/nginx/nginx.conf for security improvement
   replace:
       path: /etc/nginx/nginx.conf
       regexp: '# server_tokens off;'
       replace: 'server_tokens off;'
       backup: yes
 
-- name: Adds DOS conf for Netdata in /etc/nginx/conf
+- name: Adding DOS conf for Netdata in /etc/nginx/conf
   lineinfile:
       path: /etc/nginx/nginx.conf
       line: "\tlimit_req_zone $binary_remote_addr zone=one:1m rate=20r/s;"
       insertafter: default_type*
       backup: yes
 
-- name: Creates of logs folder
+- name: Creating logs folder
   file:
       path: /home/arsciand/logs
       state: directory
       owner: arsciand
       group: arsciand
 
-- name: Checks for selfsigned.crt
+- name: Checking for selfsigned.crt
   stat:
       path: /etc/ssl/certs/selfsigned.crt
   register: openssl
 
-- name: Creates self-encrypted SSL key and certificate
+- name: Creating self-encrypted SSL key and certificate
   command: openssl req -x509 -nodes -days 365 -newkey rsa:4096 \
       -subj /C=FR/ST=75/L=Paris/O=rs1/OU=rs1/CN=192.168.56.2/emailAddress=arsciand@student.42.fr \
       -keyout /etc/ssl/private/selfsigned.key -out /etc/ssl/certs/selfsigned.crt
   when: openssl.stat.exists == false
 
-- name: Checks for dhparam folder
+- name: Checking for dhparam folder
   stat:
       path: /etc/ssl/dhparam
   register: dhparam_folder
 
-- name: Creates of /etc/ssl/dhparam
+- name: Creating of /etc/ssl/dhparam
   file:
       path: /etc/ssl/dhparam
       state: directory
@@ -50,16 +50,16 @@
       group: root
   when: dhparam_folder.stat.exists == false
 
-- name: Checks for dhparam.pem
+- name: Checking for dhparam.pem
   stat:
       path: /etc/ssl/dhparam/dhparam.pem
   register: dhparam_file
 
-- name: Creates Diffie-Hellma group
+- name: Creating Diffie-Hellma group
   command: openssl dhparam -dsaparam -out /etc/ssl/dhparam/dhparam.pem 4096
   when: dhparam_file.stat.exists == false
 
-- name: Creates of Netdata Vhost
+- name: Creating of Netdata Vhost
   copy:
       src: netdata.conf
       dest: /etc/nginx/sites-available/
@@ -68,7 +68,7 @@
       mode: 0777
   register: vhost
 
-- name: Symlinks netdata.conf to /etc/nginx/sites-enabled
+- name: Symlinking netdata.conf to /etc/nginx/sites-enabled
   file:
       src: /etc/nginx/sites-available/netdata.conf
       dest: /etc/nginx/sites-enabled/netdata.conf

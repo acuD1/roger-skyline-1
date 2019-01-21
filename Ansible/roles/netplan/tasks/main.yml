@@ -1,5 +1,5 @@
 ---
-- name: Replaces 01-netcfg.yaml for Static IP setup
+- name: Replacing 01-netcfg.yaml for Static IP setup
   copy:
       src: 01-netcfg.yaml
       dest: /etc/netplan/
@@ -8,6 +8,6 @@
       backup: yes
   register: netplan
 
-- name: Applies Netplan
+- name: Applying Netplan
   command: netplan apply
   when: netplan.changed
