@@ -22,6 +22,7 @@
   command: sh kickstart.sh --dont-wait
   args:
       chdir: /home/arsciand/
+  ignore_errors: yes
   register: output
   when: netdata.stat.exists == false
 
