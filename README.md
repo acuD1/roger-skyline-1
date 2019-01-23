@@ -23,7 +23,7 @@ Thoses pre-requies are needed to work fully with Ansible for an automated deploy
 
 ## Method 1 (Fully automated deployment with Ansible)
 
-After all the pre-requies checked, just boot onto your VM and runs the followings commands to install git and clone this repo
+After all the pre-requies checked, just boot your VM and runs the followings commands to install git and clone this repo
 ```
 sudo apt update && sudo apt upgrade -y
 sudo apt install git -y
@@ -37,7 +37,7 @@ Then run ```setup.sh```.
 
 The script will install ```vim ccze ansible``` and then execute ```rs1-playbook.yml```. This playbook will installs and configures the following roles:
 - netplan
-- openssh
+- openssh ```port 2222```
 - netdata
 - nginx
 - postfix
