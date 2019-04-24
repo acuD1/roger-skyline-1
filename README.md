@@ -1,5 +1,7 @@
 # roger-skyline- 1 project @ 42
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/bc9e77824aa54b4b83293789d23d093d)](https://app.codacy.com/app/acuD1/roger-skyline-1?utm_source=github.com&utm_medium=referral&utm_content=acuD1/roger-skyline-1&utm_campaign=Badge_Grade_Dashboard)
+
 This project aims to familiarize us with the work of a sysadmin. I had to configure a linux distribution with some basics services like OpenSSH, Fail2Ban, a web server (Nginx) etc..
 
 ## Pre-requies
