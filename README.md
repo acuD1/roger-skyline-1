@@ -42,20 +42,20 @@ Then run ```setup.sh```.
 
 The script will install ```vim ccze ansible``` and then execute ```rs1-playbook.yml```. This playbook will installs and configures the following roles:
 
-* netplan
-* openssh ```port 2222```
-* netdata
-* nginx
-* postfix
-* ufw
-* fail2ban
-* cron_script
-* parted
+*   netplan
+*   openssh ```port 2222```
+*   netdata
+*   nginx
+*	postfix
+*	ufw
+*	fail2ban
+*	cron_script
+*	parted
 
 Each roles can be configured under ```/Ansible/roles```, or removed by simply commenting their lines in ```rs1-playbook.yml```
 
 After the execution of the Ansible playbook, you can check the deployment by running
-```
+```C
 ./roger-skyline-1/rerun.sh
 ```
 
