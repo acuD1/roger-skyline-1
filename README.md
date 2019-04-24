@@ -16,16 +16,15 @@ Thoses pre-requies are needed to work fully with Ansible for an automated deploy
   * DHCP Server : Disabled
 
 3. Installation
-  - Partition of 8GB
-  - 3GB for ```/```
-   - 1 GB for ```SWAP```
+  * Partition of 8GB
+  * 3GB for ```/```
+   * 1 GB for ```SWAP```
 
-   -	Set username to ```arsciand```
+   * Set username to ```arsciand```
 
-   -	Set password to ```1319```
+   * Set password to ```1319```
 
 4. Add the ```assets/rs1-key``` and ```assets/rs1-key.pub``` to your ```~/.ssh``` folder
-
 5. The passphrase for this key is ```qwerty```
 ## Method 1 (Fully automated deployment with Ansible)
 
@@ -43,15 +42,15 @@ Then run ```setup.sh```.
 
 The script will install ```vim ccze ansible``` and then execute ```rs1-playbook.yml```. This playbook will installs and configures the following roles:
 
-- netplan
-- openssh ```port 2222```
-- netdata
-- nginx
-- postfix
-- ufw
-- fail2ban
-- cron_script
-- parted
+* netplan
+* openssh ```port 2222```
+* netdata
+* nginx
+* postfix
+* ufw
+* fail2ban
+* cron_script
+* parted
 
 Each roles can be configured under ```/Ansible/roles```, or removed by simply commenting their lines in ```rs1-playbook.yml```
 
