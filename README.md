@@ -5,7 +5,7 @@ This project aims to familiarize us with the work of a sysadmin. I had to config
 ## Pre-requies
 
 Thoses pre-requies are needed to work fully with Ansible for an automated deployment, otherwise you can look at ```Method 2``` and adjust your own settings.
- - A minimal Ubuntu 18.04 LTS iso (netboot) : http://archive.ubuntu.com/ubuntu/dists/bionic/main/installer-amd64/current/images/netboot/mini.iso
+ - A minimal Ubuntu 18.04 LTS iso (netboot) : <http://archive.ubuntu.com/ubuntu/dists/bionic/main/installer-amd64/current/images/netboot/mini.iso>
  - VirtualBox :
    - Adapter 1 : ```NAT```
    - Adapter 2 : ```Host-only Adapter``` with ```vboxnet```
