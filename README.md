@@ -30,7 +30,7 @@ Thoses pre-requies are needed to work fully with Ansible for an automated deploy
 ## Method 1 (Fully automated deployment with Ansible)
 
 After all the pre-requies checked, just boot your VM and runs the followings commands to install git and clone this repo
-```
+```C
 sudo apt update && sudo apt upgrade -y
 sudo apt install git -y
 git clone https://github.com/acuD1/roger-skyline-1.git
