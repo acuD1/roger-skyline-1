@@ -24,8 +24,9 @@ Thoses pre-requies are needed to work fully with Ansible for an automated deploy
 
     -   Set password to ```1319```
 
-4. Add the ```assets/rs1-key``` and ```assets/rs1-key.pub``` to your ```~/.ssh``` folder
-5. The passphrase for this key is ```qwerty```
+4.  Add the ```assets/rs1-key``` and ```assets/rs1-key.pub``` to your ```~/.ssh``` folder
+
+5.  The passphrase for this key is ```qwerty```
 ## Method 1 (Fully automated deployment with Ansible)
 
 After all the pre-requies checked, just boot your VM and runs the followings commands to install git and clone this repo
@@ -36,7 +37,7 @@ git clone https://github.com/acuD1/roger-skyline-1.git
 ```
 
 Then run ```setup.sh```.
-```
+```C
 ./roger-skyline-1/setup.sh
 ```
 
@@ -59,7 +60,7 @@ After the execution of the Ansible playbook, you can check the deployment by run
 ./roger-skyline-1/rerun.sh
 ```
 
-You can now open your browser at https://192.168.56.2, it shows Netdata
+You can now open your browser at <https://192.168.56.2>, it shows Netdata
 
 ## Method 2 (By command line)
 
