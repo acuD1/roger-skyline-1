@@ -8,11 +8,11 @@ Thoses pre-requies are needed to work fully with Ansible for an automated deploy
 1. A minimal Ubuntu 18.04 LTS iso (netboot) : <http://archive.ubuntu.com/ubuntu/dists/bionic/main/installer-amd64/current/images/netboot/mini.iso>
 
 2. VirtualBox :
- - Adapter 1 : ```NAT```
- - Adapter 2 : ```Host-only Adapter``` with ```vboxnet```
-  - IPv4 : ```192.168.56.1```
-  - IPv4 Network Mask : ```255.255.255.252```
-  - DHCP Server : Disabled
+   - Adapter 1 : ```NAT```
+   - Adapter 2 : ```Host-only Adapter``` with ```vboxnet```
+     - IPv4 : ```192.168.56.1```
+     - IPv4 Network Mask : ```255.255.255.252```
+     - DHCP Server : Disabled
 3. Installation
    - Partition of 8GB
      - 3GB for ```/```
