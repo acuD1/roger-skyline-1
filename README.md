@@ -8,17 +8,17 @@ Thoses pre-requies are needed to work fully with Ansible for an automated deploy
 1. A minimal Ubuntu 18.04 LTS iso (netboot) : <http://archive.ubuntu.com/ubuntu/dists/bionic/main/installer-amd64/current/images/netboot/mini.iso>
 
 2. VirtualBox :
--	Adapter 1 : ```NAT```
+  - Adapter 1 : ```NAT```
 
--	Adapter 2 : ```Host-only Adapter``` with ```vboxnet```
-   		- IPv4 : ```192.168.56.1```
-     	- IPv4 Network Mask : ```255.255.255.252```
-     	- DHCP Server : Disabled
+  - Adapter 2 : ```Host-only Adapter``` with ```vboxnet```
+   - IPv4 : ```192.168.56.1```
+   - IPv4 Network Mask : ```255.255.255.252```
+   - DHCP Server : Disabled
 
 3. Installation
-   -	Partition of 8GB
-   		- 3GB for ```/```
-     	- 1 GB for ```SWAP```
+  - Partition of 8GB
+  - 3GB for ```/```
+   - 1 GB for ```SWAP```
 
    -	Set username to ```arsciand```
 
@@ -44,15 +44,15 @@ Then run ```setup.sh```.
 
 The script will install ```vim ccze ansible``` and then execute ```rs1-playbook.yml```. This playbook will installs and configures the following roles:
 
--  netplan
--  openssh ```port 2222```
--		netdata
--	nginx
--	postfix
--	ufw
--	fail2ban
--	cron_script
--	parted
+- netplan
+- openssh ```port 2222```
+- netdata
+- nginx
+- postfix
+- ufw
+- fail2ban
+- cron_script
+- parted
 
 Each roles can be configured under ```/Ansible/roles```, or removed by simply commenting their lines in ```rs1-playbook.yml```
 
