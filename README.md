@@ -44,9 +44,9 @@ Then run ```setup.sh```.
 
 The script will install ```vim ccze ansible``` and then execute ```rs1-playbook.yml```. This playbook will installs and configures the following roles:
 
--	netplan
--	openssh ```port 2222```
--	netdata
+-  netplan
+-  openssh ```port 2222```
+-		netdata
 -	nginx
 -	postfix
 -	ufw
